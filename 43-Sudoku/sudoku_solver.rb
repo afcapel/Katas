@@ -94,7 +94,7 @@ class SudokuSolver
   
   def calculate_posibilities_in(cells)
     disallow_duplicates_in(cells)
-    ensure_all_numbers_appears_once_in(cells)
+    ensure_all_numbers_appear_once_in(cells)
     
     cells.each do |cell|
       @sudoku[cell] = @posibilities[cell][0].to_s if  @posibilities[cell].size == 1
@@ -110,7 +110,7 @@ class SudokuSolver
     end
   end
   
-  def ensure_all_numbers_appears_once_in(cells)
+  def ensure_all_numbers_appear_once_in(cells)
     already_taken = numbers_in_cells(cells)
     not_taken = (1..9).to_a - already_taken
     
