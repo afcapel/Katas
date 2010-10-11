@@ -1,6 +1,5 @@
 class SudokuSolver
   attr_reader :sudoku
-  LINE_LENGTH = 26
 
   def self.solve(sudoku)
     SudokuSolver.new(sudoku).solve
@@ -29,12 +28,12 @@ class SudokuSolver
     
     while @sudoku.match "_"
       
-      @sudoku.lines.first.size.times do |i|
+      line_length.times do |i|
         col_cells = cells_for_column(i)
         calculate_posibilities_in(col_cells)
       end
       
-      @sudoku.lines.to_a.size.times do |i|
+      num_lines.times do |i|
         line_cells = cells_for_line(i)
         calculate_posibilities_in(line_cells)
       end
@@ -43,6 +42,7 @@ class SudokuSolver
         group_cells = cells_for_group(i)
         calculate_posibilities_in(group_cells)
       end
+      
     end
     
     puts "\nSOLUTION:"
@@ -51,8 +51,8 @@ class SudokuSolver
   end
   
   def cells_for_line(line_num)
-    start = line_num * LINE_LENGTH
-    finish = (line_num+1) * LINE_LENGTH - 1 # don't include return char
+    start = line_num * line_length
+    finish = (line_num+1) * line_length - 1 # don't include return char
     
     (start..finish).to_a
   end
@@ -60,7 +60,7 @@ class SudokuSolver
   def cells_for_column(column_line)
     cells = []
     @sudoku.lines.to_a.each_index do |i|
-      cells << LINE_LENGTH * i + column_line
+      cells << line_length * i + column_line
     end
     
     cells
@@ -77,7 +77,7 @@ class SudokuSolver
     
     (first_line..last_line).each do |line_num|
       (first_column..last_column).each do |col_num|
-        cells << line_num  * LINE_LENGTH + col_num
+        cells << line_num  * line_length + col_num
       end
     end
     
@@ -122,4 +122,13 @@ class SudokuSolver
       end
     end
   end
+  
+  def line_length
+    @sudoku.lines.first.size
+  end
+  
+  def num_lines
+    @sudoku.lines.to_a.size
+  end
+  
 end
