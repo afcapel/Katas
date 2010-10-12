@@ -12,7 +12,7 @@ class SudokuSolver
   
   def populate_posibilites
     @posibilities = []
-    0.upto(@sudoku.length-1).each do |i|
+    @sudoku.length.times do |i|
       @posibilities[i] = case @sudoku[i]
       when "_"
         (1..9).to_a
@@ -59,7 +59,7 @@ class SudokuSolver
   
   def cells_for_column(column_line)
     cells = []
-    @sudoku.lines.to_a.each_index do |i|
+    num_lines.times do |i|
       cells << line_length * i + column_line
     end
     
@@ -72,7 +72,7 @@ class SudokuSolver
     first_line = 4 * (group_num / 3)
     last_line =  first_line + 4
     
-    first_column = (group_num %3) * 8
+    first_column = (group_num % 3) * 8
     last_column = first_column + 8
     
     (first_line..last_line).each do |line_num|
@@ -84,20 +84,12 @@ class SudokuSolver
     cells
   end
   
-  def numbers_in_cells(cells)
-    cells.collect { |c| @posibilities[c][0].to_i if @posibilities[c].size == 1}.delete_if{ |n| n == nil || n == 0 }
-  end
-  
-  def string_with_cells(cells)
-    cells.inject("") { |string, i| string + @sudoku[i]}
-  end
-  
   def calculate_posibilities_in(cells)
     disallow_duplicates_in(cells)
     ensure_all_numbers_appear_once_in(cells)
     
     cells.each do |cell|
-      @sudoku[cell] = @posibilities[cell][0].to_s if  @posibilities[cell].size == 1
+      @sudoku[cell] = @posibilities[cell].first.to_s if  @posibilities[cell].size == 1
     end
   end
   
@@ -117,7 +109,7 @@ class SudokuSolver
     not_taken.each do |n|
       possible_cells = cells.select { |c| @posibilities[c].include? n }
       if possible_cells.size == 1
-        cell = possible_cells[0]
+        cell = possible_cells.first
         @posibilities[cell] = [] << n
       end
     end
@@ -129,6 +121,14 @@ class SudokuSolver
   
   def num_lines
     @sudoku.lines.to_a.size
+  end
+  
+  def numbers_in_cells(cells)
+    cells.collect { |c| @posibilities[c].first.to_i if @posibilities[c].size == 1}.reject!{ |n| n == nil || n == 0 }
+  end
+  
+  def string_with_cells(cells)
+    cells.inject("") { |string, i| string + @sudoku[i]}
   end
   
 end
