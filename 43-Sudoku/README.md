@@ -42,12 +42,12 @@ This week's Ruby Quiz is to write a solver that takes the puzzle on STDIN and pr
 SOLUTION
 ---------
 
-My solution works creating an array of the posible numbers that can be in any position in the sudoku. For any position diferent than '_', the posibilities are just initial number specified.
+My solution works creating an array of the posible numbers that can be in any position in the sudoku. For any position diferent than '_', the posibilities are just the initial number specified.
 
 For the positions with blanks the posibilities are initially any number from 1 to 9. Then, the posibilities are reduced appliying Sudoku rules:
 
-- A number can not appear twice in any file, column or box.
-- Each number must appear once in each file, column and box.
+- A number can not appear twice in any row, column or box.
+- Each number must appear once in each row, column and box.
 
 These rules are applied to reduce posibilities until only one number can be in each position. At this point the sudoku is solved.
 
